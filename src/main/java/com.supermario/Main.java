@@ -1,7 +1,6 @@
 package com.supermario;
 
-import java.awt.*;
-import com.supermario.engine.Window;
+import com.supermario.GUI.Window;
 
 public class Main {
     public static void main(String[] args) {

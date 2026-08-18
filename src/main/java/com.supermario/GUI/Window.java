@@ -1,4 +1,4 @@
-package com.supermario.engine;
+package com.supermario.GUI;
 
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
