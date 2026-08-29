@@ -1,9 +1,11 @@
-package com.supermario.GUI;
+package com.supermario.Engine;
 
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.system.Struct;
 
+import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.*;
@@ -14,10 +16,16 @@ public class Window {
     private static Window window = null;
     private long glfwWindow;
 
+    private float r, g, b, a;
+
     private Window(){
         this.width = 1980;
         this.height = 1080;
         this.title = "Super Mario";
+        r = 1;
+        g = 1;
+        b = 1;
+        a = 1;
     }
 
     public static Window get(){
@@ -32,6 +40,14 @@ public class Window {
 
         init();
         loop();
+
+        // Free the memory
+        glfwFreeCallbacks(glfwWindow);
+        glfwDestroyWindow(glfwWindow);
+
+        // Terminate GLFW and free the error callback
+        glfwTerminate();
+        glfwSetErrorCallback(null).free();
     }
     public void init(){
         // Set error callback
@@ -53,6 +69,11 @@ public class Window {
         if(glfwWindow == NULL){
             throw new IllegalStateException("Enable to create the GLFW window");
         }
+
+        glfwSetCursorPosCallback(glfwWindow, MouseListener::mousePosCallback);
+        glfwSetMouseButtonCallback(glfwWindow, MouseListener::mouseButtonCallback);
+        glfwSetScrollCallback(glfwWindow, MouseListener::mouseScrollCallback);
+        glfwSetKeyCallback(glfwWindow, KeyListener::keyCallBack);
 
         // Make the openGL the context current
         glfwMakeContextCurrent(glfwWindow);
@@ -76,8 +97,12 @@ public class Window {
             // Poll event
             glfwPollEvents();
 
-            glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+            glClearColor(r, g, b, a);
             glClear(GL_COLOR_BUFFER_BIT);
+
+            if(KeyListener.isKeyPressed(GLFW_KEY_SPACE)){
+                System.out.println("space");
+            }
 
             glfwSwapBuffers(glfwWindow);
         }
