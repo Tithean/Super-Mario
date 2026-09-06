@@ -1,6 +1,6 @@
 package com.supermario;
 
-import com.supermario.Engine.Window;
+import com.supermario.GUI.Window;
 
 public class Main {
     static void main(String[] args) {
